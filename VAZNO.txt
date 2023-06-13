@@ -1,0 +1,21 @@
+1. Pocinjemo sa kontrolerom - u Folderu kontroler - funkcije za autentikaciju i CRUD operacije i EXPORTUJEMO ih
+2. Zatim u Route folderu - pravimo rute za autentikaciju i Crud operacije, IMPORTUJEMO kontroler funkcije i
+ exportujemo routere u app.js 
+3. U app.js sa app.use "aktiviramo" rutere i navodimo putanje tj rute koju ce uvezeni ruteri hendlovati
+4. Konekcija sa bazom u DB folderu, i setovanje env varijable, pa IMPORTOVANJE konekcije u app.js i 
+konektovanje na bazu pre nego se server podigne (start() func) 
+5. Moongose validation in Schema  - Schema Types, Validation
+    U modelu je schema kako ce baza da izgleda i validacija unosa sa porukama
+6. Uvozimo model u kontroler - prvo Auth za registraciju 
+7. U kontroleru imao isto validaciju - to samo navodimo kao primer
+8. Hashovanje password-a - sa modulom bcryptjs umesto bcrypt!!! - u kontroleru
+ --- Unique: true nesto zeza... - Resenje prvo - uneti odmah pre kreiranja baze. naravno...
+ Ako smo vec zaboravili a kreirali bazu - Izmeniti ime baze u .ENV - MONGO_URI tako da kreira potpuno
+ novu bazu sa unique vrednostima otpocetka. Ako samo izbrisemo onu falicnu nista ne dobijamo
+a to je sve jer on nije validator! verovatno...
+9. Hashovanje iz kontrolera prenosimo u model kod Scheme i koristimo Mongoose Middleware funkcije - schema.PRE()
+10. Nakon registracije se pravi token i salje nazad klijentu radi logona - jsonwebtoken modul
+
+12345678
+
+7:27
