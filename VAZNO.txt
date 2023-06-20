@@ -15,7 +15,37 @@ konektovanje na bazu pre nego se server podigne (start() func)
 a to je sve jer on nije validator! verovatno...
 9. Hashovanje iz kontrolera prenosimo u model kod Scheme i koristimo Mongoose Middleware funkcije - schema.PRE()
 10. Nakon registracije se pravi token i salje nazad klijentu radi logona - jsonwebtoken modul
+11. Instance metode - Instance Modela su Documenti i imaju svoje built in ili custom metode...
+    UserSchema.methods.ImeMetoda = function ... tako da mozemo pri kreiranju usera u modelu odmah da kreiramo token!
+    Primena u kontroleru npr - user.getName() - user obj. dobijen pri -> const user = await User.create({...req.body})
+12. Preporuka za SECRET za Token koristiti neki generator kljuceva npr: google it... https://acte.ltd/utils/randomkeygen
+13. U env varijable smestamo i generisani Secret za token i expire vrednost i gde god nam treba pozivamo sa:
+    process.env.IME_ENV_VARIJABLE (naravno uz uvezeni dotenv modul) require('dotenv').config()
+14. Mongoose model ima vise helper funkcija za CRUD operacije - findOne, (User.findOne({neka_varijabla ili string}))
+    Opcije tj query conditions moraju biti u objektu
+15. u Modelu cemo dodati instance metod za proveru passworda i onda u kontroleru pozvati tu funkciju tj metod
+16. PROMISES ASYNC/AWAIT dobro prouciti sa FCC-a
+17. Hendlovali smo proveru praznih polja tj Error u kontroleru a ne u error-handler middleware-u
+18. Verifikacija tokena koji smo poslali pri registraciji/loginu korisniku a koji on salje nazad pri svakom REQ
+    u middleware/authentication.js
+    U osnovi na kraju dobijemo verifikacijom ono sto smo koristili pri kreiranju tokena (ovde - id i name)
+19. Umesto da authentication MD stavljamo u ruter kod svake putanje a pre handler funkcije to cemo 
+lepo importovati u app.js glavni fajl i dodati kao middleware u upotrebi rutera za koji nam treba (/jobs)
+- REQ.USER objekat koji izvucenim ID-om i npr name iz tokena
+* Dakle, proba autorizacije za /jobs nije radila JER:
+    - pogresno ime varijable u ENV
+    - pogresno navodjenje u Modelu za Token i MD za verifikaciju 
+    - i ispustio next() al bitno da je komentar kako to sad saljemo dalje SLEDECOJ funct tu... :)
+20.U Middleware/authentication - alternativa tome da direktno kreiramo REQ.USER iz tokena je da koristimo izvuceni ID i tokena
+da trazimo usera u bazi pa onda tek kreiramo REQ.USER. Ono select je za izbacivanje polja iz objekta
+21. Model Jobs - enum opcije sa defaultom i novo Refernciranje na drugu schemu sa
+    type: mongoose.Types.ObjectId, ref: 'User'
+    {tumestamps: true} - novo...
 
-12345678
+123 1
 
-7:27
+8:12
+
+
+
+kvBM}%~q,yT7RXX
