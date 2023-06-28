@@ -5,6 +5,7 @@ class UnauthenticatedError extends CustomAPIError {
   constructor(message) {
     super(message);
     this.statusCode = StatusCodes.UNAUTHORIZED;
+    this.dodatak = "DODATO U KLASU!"
   }
 }
 

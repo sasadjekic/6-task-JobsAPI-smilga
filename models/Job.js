@@ -28,6 +28,6 @@ const JobSchema = new mongoose.Schema(
             required: [true, 'Please provide user']
         }
         //Ovo je novo timestamp... kao druga opcija u Schemi
-}, {tumestamps: true}) 
+}, {timestamps: true}) 
 
 module.exports = mongoose.model('Job', JobSchema)

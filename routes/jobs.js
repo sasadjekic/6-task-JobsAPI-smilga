@@ -5,6 +5,6 @@ const {  getAllJobs, getJob, createJob, updateJob, deleteJob } = require('../con
 
 //Ruta "/api/v1/jobs"
 router.route('/').post(createJob).get(getAllJobs);
-router.post('/:id').get(getJob).patch(updateJob).delete(deleteJob)
+router.route('/:id').get(getJob).patch(updateJob).delete(deleteJob)
 
 module.exports = router;

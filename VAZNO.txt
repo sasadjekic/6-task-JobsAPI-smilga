@@ -40,11 +40,96 @@ lepo importovati u app.js glavni fajl i dodati kao middleware u upotrebi rutera 
 da trazimo usera u bazi pa onda tek kreiramo REQ.USER. Ono select je za izbacivanje polja iz objekta
 21. Model Jobs - enum opcije sa defaultom i novo Refernciranje na drugu schemu sa
     type: mongoose.Types.ObjectId, ref: 'User'
-    {tumestamps: true} - novo...
+    {tumestamps: true} - novo... - ubacuje podatke o vremenu kreiranja i update-a i 
+    posle da ih upotrebimo u filterima - slaganje novije od, starije od itd...
+22. Kontroler - Create Job - promena Modela -Jobs sa umetanjem u REQ.BODY iz REQ.USER-a userId - opis u 
+    Kontoler/jobs
+23. Kontroler - Get all jobs - opet koristimo req.user.userId 
+    * A pri probi ovoga u Postmanu moramo da u Headers da dodamo Authorization - Bearer ...token... (GET, /jobs)
+24. (8:26) Setovanje Testova tj (dinamicko koriscenje tokena) u POSTMANU - kartica TEST - od POST requesta /login putanja 
+    Snipet kod kojim kreiramo Globalnu varijablu i dodeljujemo vrednost tokena
+    Onda odemo u neki od kartica REQ-a i u Authorisation kartici izaberemo Bearer Token - i token: ime global token 
+    varijable - ovde accessToken - To isto uradimo u registraciji i kreiramo novog usera...
+Dakle mi u loginu menjamo vrednost tokena tako sto se logujemo sa drugim userima i taj token se prenosi kao 
+Globalna varijabla koju smo podesili u Authorisation kartici SVAKOG REQ, ostali rucno ako ne ubacimo
+25. Get one job - .findOne
+* (8:35) nested destructuring - 
+26. Update one job - dodatno req.body u destruktuiranju 
+    Job.findByIdAndUpdate,  menja se i update polje tj vreme update-a u dokumentu
+    //provera ako polja za update nisu popunjena TJ Ako saljemo prazna! Ako ih skroz izosatavimo to je ok
+    //jr je ovo PATCH menja samo one koje je dobio
+27. Delete - findByIdAndRemove - ne vracamo nista (sto je bio problem sa ...Delete metodom)
+28. Mongoose errors - prema schemi 
+Ali u error-handleru - dodajemo new custom error object koji ce se aktivirati ako ne bacimo Custom errors 
+koje vec imamo
+Opisi u error-handler-u u MD
+U sustini mi treba da iskoristimo message propertije error objekta i njih upotrebimo
+IZGLED ERROR OBJEKTA tj sastav - (slucaj ValidationError - nema passworda i emaila)
+Sastav: error objekat a propertiji su isto objekti, name, message
+"err": {
+      "errors": {
+          "password": {
+              ...
+          },
+          "email": {
+              ...
+          }
+      },
+      "_message": "User validation failed",
+      "name": "ValidationError",   //IME
+      "message": "User validation failed: password: Please provide valid password, email: Please provide email"
+  }
+Spajanje stringova tj message propertija preko Object.values(err.errros)
+* //!!!Kada izbaci gresku onda se ona hendluje i to salje kao respons umesto ovog sto je predvidjeno
+    //kada je uspesno nesto izvrseno
+OK, probati razne kombinacije sa Erorr handleri - Postman REQ da bi videli sta koju gresku hendluje
+Ali imamo Mongoose ValidationError, i CustomAPi greske i Unique Mongo (sto nije validacija) email handler
+29.CastErrors - vraca Mongo pri nepostojecem ID job-a npr
 
-123 1
+-Security
+RateLimiter - ogranicava broj zahteva
+* app.set('trust proxy', 1) - za reverse proxy npr Heroku... to dodajemo
+cors()
+helmet()
+xss()
 
-8:12
+
+(9:20)
+-Heroku devops - koraci
+    -Brisanje git foldera ako ga ima (kada kopiramo neki negde): rm -rf .git
+    -Provera env porta (tj da li imamo) jer ne ynamo koji je port na heroku ili drugom
+    -U package.json - verzija node-a - "engines": {"node": "14.x"}
+        - scripts - "node app.js" umesto nodemon app
+    -Procfile (za Heroku) - node app.js
+    -GIT - git init, git add, git commit
+    - Heroku login - create, git remote -v provera 
+    - Dizanje ENV vrednosti varijable na heroku - heroku config:set JWT_LIFETIME=30d - za svaku koju imamo
+    - Dizanje app - git push heroku master
+    - GUI Heroku - gde je app - Settings - config wires - za ostale ENV var
+    - Opcija More - Restart dynos 
+        - Logs - PORT 43710, status 143, pa oper nakon restarta port 46097
+    - Postman - kreiranje global rute sa heroku.com /api/v1 npr {{PROD_URL}}
+        - nove rute - auth/login - prekopiramo ono iz TEST kartice u login ruti na lokalu
+Swager docs
+    -heroku git clone  - kloniranje app sa herokua - radi promena i odrzavanja
+    - pa onda kreiranje ponovo .env fajla i npm install && npm start - za module
+    - nodemon ako hocemo brze restarte - samo dodamo u script npm run dev - za: "dev": "nodemon app"
+    - POSTMAN - na kolekciju - tri tacke - pa EXPORT - za api
+    - APIMATIK.io - regis za api docs 
+        - Import exportovanog JSON-a iz Postmana pa Proceed i onda Edit 
+        - na Endpoints - on/off autentikacije za login i regis jer su to javni endpointi
+        - Nakon cuvanja svih promena - idemo na dashboard i Eksport APIa - opcija Open API 3.0 YAML
+
+    - Swager ui editor o demo na sajt - i ubacimo to sto nam eksportovano u poseban prozor
+    - swager ui parameters - menjanje /f32423eur892ur4uru483 id-a u - {id} kod jobs/:id
+    - pa testiranje ruta sa Execute
+-Moduli "swagger-ui-express i yamljs": "^0.3.0" za swager
+    - fajl kreiranje u root folderu app-a swagger.yaml
+    - pa dodavanje u app.js sta treba, (nece raditi u lokalu a mora i na github)
+
+123 12
+
+9:45
 
 
 
